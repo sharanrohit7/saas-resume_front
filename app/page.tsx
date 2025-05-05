@@ -1,103 +1,87 @@
+"use client";
+import { signInWithPopup } from "firebase/auth";
 import Image from "next/image";
+
+import Link from 'next/link'
+import { auth, provider } from "./lib/firebaseClient";
+import LoginCard from "./components/Login";
+import Footer from "./components/Footer";
+
+
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      {/* Navigation */}
+      <nav className="flex items-center justify-between p-6 border-b border-gray-800">
+        <div className="text-2xl font-bold text-blue-400">JobFit AI</div>
+        <Link href="#login" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-500 transition-colors">
+          Get Started
+        </Link>
+      </nav>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Hero Section */}
+      <section className="container mx-auto px-6 py-16 md:flex md:items-center">
+        <div className="md:w-1/2">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            Beat the ATS & Get More Interviews
+          </h1>
+          <p className="text-xl text-gray-300 mb-8">
+            Upload your resume and job description – our AI analyzes gaps, suggests improvements, and finds matching jobs in seconds.
+          </p>
+          <div className="flex gap-4">
+            <button className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-500 transition-colors">
+              Sign Up Free
+            </button>
+            <button className="border-2 border-gray-700 text-gray-300 px-8 py-4 rounded-lg text-lg hover:border-blue-400 hover:text-white transition-colors">
+              How It Works →
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="md:w-1/2 mt-12 md:mt-0">
+          {/* Dashboard Mockup */}
+          <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <div className="flex items-center justify-between mb-6">
+              <div className="text-lg font-semibold text-white">Resume Score: <span className="text-blue-400">82% Match</span></div>
+            </div>
+            <div className="space-y-4 mb-6">
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <div className="text-sm text-gray-300">Missing Skills: React, TypeScript</div>
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <div className="font-medium text-white">SDE 2 at Amazon</div>
+                <div className="text-sm text-gray-400">New York, NY • Full-time</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="bg-gray-800 py-20">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold text-center mb-12 text-white">Why JobFit AI?</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { icon: '🔍', title: 'Deep Resume Analysis', desc: 'Identifies missing keywords and suggests ATS-friendly rewrites' },
+              { icon: '🎯', title: 'Smart Job Matching', desc: 'Searches 1000s of listings to find your perfect role' },
+              { icon: '📈', title: 'Competitive Edge', desc: 'See how you stack against other applicants' },
+            ].map((feature, i) => (
+              <div key={i} className="bg-gray-700 p-8 rounded-xl border border-gray-600 hover:border-blue-400 transition-colors">
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold mb-4 text-white">{feature.title}</h3>
+                <p className="text-gray-300">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Login/Signup Section */}
+      <section id="login" className="container mx-auto px-6 py-20 max-w-md">
+        <LoginCard />
+      </section>
+      <Footer />
     </div>
-  );
+  )
 }
