@@ -14,7 +14,7 @@ export default function Sidebar() {
   const navItems = [
     { name: "Dashboard", href: "/dashboard", icon: <FiHome className="w-5 h-5" /> },
     { name: "Resume Analysis", href: "/analysis", icon: <FiFileText className="w-5 h-5" /> },
-    { name: "My Resumes", href: "/dashboard/resumes", icon: <FiBriefcase className="w-5 h-5" /> },
+    { name: "My Resumes", href: "/resumes", icon: <FiBriefcase className="w-5 h-5" /> },
     { name: "Applied Jobs", href: "/dashboard/applications", icon: <FiSend className="w-5 h-5" /> },
   ];
 

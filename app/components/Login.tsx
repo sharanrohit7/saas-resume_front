@@ -4,6 +4,7 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../lib/firebaseClient";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signInUser, User } from "../api/auth,";
 
 export default function LoginCard() {
     const router = useRouter();
@@ -14,6 +15,16 @@ export default function LoginCard() {
        user
       });
       const firebaseIdToken = await user.getIdToken();
+      const signInData : User ={
+        email: user.email || "",
+        firebaseUID: user.uid,
+        photoURL: user.photoURL || "",
+        authProvider: "GOOGLE",
+        country: "IN",
+      }
+      console.log("SignIn Data:", signInData);
+      
+      await signInUser(signInData)
       console.log("Firebase ID Token:", firebaseIdToken);
       router.push("/dashboard");
     } catch (error: any) {

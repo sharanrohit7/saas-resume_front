@@ -1,47 +1,50 @@
-'use client';
+"use client";
+import { createContext, useContext, useEffect, useState } from "react";
+import { User, onIdTokenChanged, getIdToken } from "firebase/auth";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { User, onAuthStateChanged, signOut } from 'firebase/auth';
+import nookies from "nookies";
+import { auth } from "../lib/firebaseClient";
 
-import { useRouter } from 'next/navigation';
-import { auth } from '../lib/firebaseClient';
-
-interface AuthContextType {
+interface AuthContextProps {
   user: User | null;
-  logout: () => Promise<void>;
+  loading: boolean;
+  token: string | null;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextProps>({
+  user: null,
+  loading: true,
+  token: null,
+});
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
+    const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
+      if (!firebaseUser) {
+        setUser(null);
+        setToken(null);
+        nookies.set(undefined, "token", "", { path: "/" });
+      } else {
+        setUser(firebaseUser);
+        const freshToken = await getIdToken(firebaseUser, true);
+        setToken(freshToken);
+        nookies.set(undefined, "token", freshToken, { path: "/" });
+      }
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  const logout = async () => {
-    await signOut(auth);
-    router.push('/login');
-    setUser(null);
-  };
-
   return (
-    <AuthContext.Provider value={{ user, logout }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, loading, token }}>
+      {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used inside AuthProvider');
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
