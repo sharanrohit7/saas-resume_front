@@ -1,25 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  FiUpload,
-  FiAlertCircle,
-  FiCheckCircle,
-  FiLoader,
-  FiAward,
-  FiBook,
-  FiCode,
-  FiBarChart2,
-  FiEdit2,
-  FiStar,
-  FiChevronRight,
-  FiTrendingUp,
-  FiClock,
-} from "react-icons/fi";
+
 import Link from "next/link";
 import React from "react";
 import api from "../lib/axios";
 import ResumesPopup from "../components/ResumePopup";
+import { FiStar, FiChevronRight, FiUpload, FiLoader, FiAlertCircle, FiCode, FiCheckCircle, FiBarChart2, FiClock, FiAward, FiTrendingUp } from "react-icons/fi";
 
 type AnalysisResponse = {
   success: boolean;
@@ -238,7 +225,7 @@ export default function ResumeAnalysis() {
   const [companyName, setCompanyName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<AnalysisResponse | null>(null);
+const [result, setResult] = useState<AnalysisResponse | null>(null);
   const [error, setError] = useState("");
   const [scoreHistory, setScoreHistory] = useState<AtsScoreHistory>([]);
   const [showResumesPopup, setShowResumesPopup] = useState(false);
@@ -303,8 +290,12 @@ export default function ResumeAnalysis() {
 
       // Match what your UI expects
       setResult(responseData);
-    } catch (err: any) {
-      setError(err.message || "Failed to analyze resume");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Failed to analyze resume");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -315,13 +306,12 @@ export default function ResumeAnalysis() {
       <h1 className="text-2xl font-bold mb-2 text-white">Resume Analysis</h1>
 
       {/* Upgrade Banner (shown for basic plan) */}
-      {result?.plan === "BASIC" && (
+{result?.plan === "BASIC" && (
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FiStar className="text-yellow-300" />
             <span>
-              Upgrade to Premium for detailed analysis, keyword optimization,
-              and competitive insights
+              Upgrade to Premium for detailed analysis, keyword optimization, &amp; competitive insights
             </span>
           </div>
           <Link
@@ -430,7 +420,7 @@ export default function ResumeAnalysis() {
           </div>
 
           {/* Results Section */}
-          {result && (
+{result && (
             <div className="space-y-6">
               {result.plan === "BASIC" ? (
                 <BasicAnalysisView data={result.data as BasicAnalysisData} />
@@ -468,7 +458,7 @@ function BasicAnalysisView({ data }: { data: BasicAnalysisData }) {
 
         <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-4 rounded-lg border border-gray-600 mb-6">
           <h3 className="text-lg font-semibold mb-3 text-white flex items-center gap-2">
-            <FiStar className="text-yellow-400" /> What You're Missing in
+            <FiStar className="text-yellow-400" /> What You are Missing in
             Premium
           </h3>
           <ul className="list-disc list-inside space-y-2 text-gray-300 pl-2">
@@ -758,30 +748,30 @@ function BasicAnalysisView({ data }: { data: BasicAnalysisData }) {
 //   }
 
 // Helper Components
-function AnalysisCard({
-  title,
-  value,
-  description,
-  icon,
-  borderColor,
-}: {
-  title: string;
-  value: string;
-  description: string;
-  icon: React.ReactNode;
-  borderColor: string;
-}) {
-  return (
-    <div className={`bg-gray-700 p-4 rounded-lg border-l-4 ${borderColor}`}>
-      <div className="flex items-center gap-2 text-gray-400 mb-2">
-        {icon}
-        <h3 className="text-sm">{title}</h3>
-      </div>
-      <p className="text-2xl font-bold text-white mb-1">{value}</p>
-      <p className="text-gray-500 text-xs">{description}</p>
-    </div>
-  );
-}
+// function AnalysisCard({
+//   title,
+//   value,
+//   description,
+//   icon,
+//   borderColor,
+// }: {
+//   title: string;
+//   value: string;
+//   description: string;
+//   icon: React.ReactNode;
+//   borderColor: string;
+// }) {
+//   return (
+//     <div className={`bg-gray-700 p-4 rounded-lg border-l-4 ${borderColor}`}>
+//       <div className="flex items-center gap-2 text-gray-400 mb-2">
+//         {icon}
+//         <h3 className="text-sm">{title}</h3>
+//       </div>
+//       <p className="text-2xl font-bold text-white mb-1">{value}</p>
+//       <p className="text-gray-500 text-xs">{description}</p>
+//     </div>
+//   );
+// }
 function AdvancedAnalysisView({ data }: { data: AdvancedAnalysisData }) {
   return (
     <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 space-y-8">
@@ -1208,62 +1198,62 @@ function KeywordMatchBox({
     </div>
   );
 }
-function Section({
-  title,
-  icon,
-  children,
-}: {
-  title: string;
-  icon: React.ReactElement<{ className?: string }>;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <h3 className="text-lg font-semibold mb-3 text-white flex items-center gap-2">
-        {React.cloneElement(icon, { className: "text-blue-400" })}
-        {title}
-      </h3>
-      {children}
-    </div>
-  );
-}
+// function Section({
+//   title,
+//   icon,
+//   children,
+// }: {
+//   title: string;
+//   icon: React.ReactElement<{ className?: string }>;
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <div>
+//       <h3 className="text-lg font-semibold mb-3 text-white flex items-center gap-2">
+//         {React.cloneElement(icon, { className: "text-blue-400" })}
+//         {title}
+//       </h3>
+//       {children}
+//     </div>
+//   );
+// }
 
-function MatchBox({
-  type,
-  items,
-  color,
-}: {
-  type: string;
-  items: string[];
-  color: "green" | "yellow" | "red";
-}) {
-  const colorClasses = {
-    green: "bg-green-900/50 text-green-400 border-green-400/30",
-    yellow: "bg-yellow-900/50 text-yellow-400 border-yellow-400/30",
-    red: "bg-red-900/50 text-red-400 border-red-400/30",
-  };
+// function MatchBox({
+//   type,
+//   items,
+//   color,
+// }: {
+//   type: string;
+//   items: string[];
+//   color: "green" | "yellow" | "red";
+// }) {
+//   const colorClasses = {
+//     green: "bg-green-900/50 text-green-400 border-green-400/30",
+//     yellow: "bg-yellow-900/50 text-yellow-400 border-yellow-400/30",
+//     red: "bg-red-900/50 text-red-400 border-red-400/30",
+//   };
 
-  return (
-    <div className="bg-gray-700 p-4 rounded-lg">
-      <h4 className="text-gray-300 mb-2 capitalize">
-        {type} Matches ({items.length})
-      </h4>
-      <div className="flex flex-wrap gap-2">
-        {items.slice(0, 5).map((item, i) => (
-          <span
-            key={i}
-            className={`px-3 py-1 rounded-full text-sm border ${colorClasses[color]}`}
-          >
-            {item}
-          </span>
-        ))}
-        {items.length === 0 && (
-          <span className="text-gray-500 text-sm">None found</span>
-        )}
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div className="bg-gray-700 p-4 rounded-lg">
+//       <h4 className="text-gray-300 mb-2 capitalize">
+//         {type} Matches ({items.length})
+//       </h4>
+//       <div className="flex flex-wrap gap-2">
+//         {items.slice(0, 5).map((item, i) => (
+//           <span
+//             key={i}
+//             className={`px-3 py-1 rounded-full text-sm border ${colorClasses[color]}`}
+//           >
+//             {item}
+//           </span>
+//         ))}
+//         {items.length === 0 && (
+//           <span className="text-gray-500 text-sm">None found</span>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
 
 // function ATSScoreHistoryCard({ scores }: { scores: AtsScoreHistory }) {
 //     return (

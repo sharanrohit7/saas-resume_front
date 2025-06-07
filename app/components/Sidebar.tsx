@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiHome, FiFileText, FiBriefcase, FiSend, FiUser, FiLogOut } from "react-icons/fi";
+import { FiHome, FiFileText, FiBriefcase, FiSend, FiLogOut } from "react-icons/fi";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebaseClient";

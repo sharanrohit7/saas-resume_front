@@ -1,9 +1,6 @@
 "use client";
-import { signInWithPopup } from "firebase/auth";
-import Image from "next/image";
 
 import Link from 'next/link'
-import { auth, provider } from "./lib/firebaseClient";
 import LoginCard from "./components/Login";
 import Footer from "./components/Footer";
 

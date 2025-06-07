@@ -27,8 +27,8 @@ export default function LoginCard() {
       await signInUser(signInData)
       console.log("Firebase ID Token:", firebaseIdToken);
       router.push("/dashboard");
-    } catch (error: any) {
-      console.error("❌ Login failed:", error.message);
+    } catch (error) {
+      console.error("❌ Login failed:",error);
     }
   };
 
