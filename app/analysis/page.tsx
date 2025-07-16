@@ -6,7 +6,19 @@ import Link from "next/link";
 import React from "react";
 import api from "../lib/axios";
 import ResumesPopup from "../components/ResumePopup";
-import { FiStar, FiChevronRight, FiUpload, FiLoader, FiAlertCircle, FiCode, FiCheckCircle, FiBarChart2, FiClock, FiAward, FiTrendingUp } from "react-icons/fi";
+import {
+  FiStar,
+  FiChevronRight,
+  FiUpload,
+  FiLoader,
+  FiAlertCircle,
+  FiCode,
+  FiCheckCircle,
+  FiBarChart2,
+  FiClock,
+  FiAward,
+  FiTrendingUp,
+} from "react-icons/fi";
 
 type AnalysisResponse = {
   success: boolean;
@@ -225,10 +237,11 @@ export default function ResumeAnalysis() {
   const [companyName, setCompanyName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-const [result, setResult] = useState<AnalysisResponse | null>(null);
+  const [result, setResult] = useState<AnalysisResponse | null>(null);
   const [error, setError] = useState("");
   const [scoreHistory, setScoreHistory] = useState<AtsScoreHistory>([]);
   const [showResumesPopup, setShowResumesPopup] = useState(false);
+  const [resumeTitle, setResumeTitle] = useState('')
   useEffect(() => {
     // Fetch ATS score history
     const fetchScoreHistory = async () => {
@@ -280,10 +293,10 @@ const [result, setResult] = useState<AnalysisResponse | null>(null);
         company_name: companyName,
         job_title: jobTitle,
         model: "o3-mini-2025-01-31",
-        queryType: "BASIC",
+        queryType: "PRO",
       });
 
-      console.log("Full axios response:", response.data);
+      // console.log("Full axios response:", response.data);
 
       // Axios wraps the response in a data property
       const responseData = response.data;
@@ -306,12 +319,13 @@ const [result, setResult] = useState<AnalysisResponse | null>(null);
       <h1 className="text-2xl font-bold mb-2 text-white">Resume Analysis</h1>
 
       {/* Upgrade Banner (shown for basic plan) */}
-{result?.plan === "BASIC" && (
+      {result?.plan === "BASIC" && (
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FiStar className="text-yellow-300" />
             <span>
-              Upgrade to Premium for detailed analysis, keyword optimization, &amp; competitive insights
+              Upgrade to Premium for detailed analysis, keyword optimization,
+              &amp; competitive insights
             </span>
           </div>
           <Link
@@ -332,7 +346,8 @@ const [result, setResult] = useState<AnalysisResponse | null>(null);
               Analyze Your Resume
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+           
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-gray-400 mb-2">Resume URL</label>
                 <div className="flex gap-2">
@@ -345,13 +360,19 @@ const [result, setResult] = useState<AnalysisResponse | null>(null);
                   />
                   <button
                     onClick={() => setShowResumesPopup(true)}
-                    className="bg-gray-700 hover:bg-gray-600 px-4 rounded-lg border border-gray-600 flex items-center gap-2"
+                    className="bg-gray-700 hover:bg-gray-600 px-4 rounded-lg border border-gray-600 flex items-center gap-2 text-white"
                   >
                     <FiUpload /> Select
                   </button>
-                  <ResumesPopup
+
+                  {/* Popup Component */}
+                  {/* <ResumesPopup
                     isOpen={showResumesPopup}
                     onClose={() => setShowResumesPopup(false)}
+                    onSelectResume={(url) => {
+                      setResumeUrl(url);
+                      setShowResumesPopup(false);
+                    }}
                   />
                 </div>
               </div>
@@ -366,7 +387,102 @@ const [result, setResult] = useState<AnalysisResponse | null>(null);
                   className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-blue-400 focus:outline-none"
                 />
               </div>
-            </div>
+            </div> */} 
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+  <div>
+    <label className="block text-gray-400 mb-2">Resume</label>
+    <div className="flex flex-col gap-2">
+      {resumeUrl && resumeTitle ? (
+        <div className="flex items-center justify-between bg-gray-700 border border-gray-600 rounded-lg px-4 py-3">
+          <div className="text-white font-medium truncate">
+            📄 {resumeTitle}
+          </div>
+          <button
+            onClick={() => setShowResumesPopup(true)}
+            className="text-blue-400 hover:text-blue-300 underline text-sm"
+          >
+            Change
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={() => setShowResumesPopup(true)}
+          className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg border border-gray-600 flex items-center gap-2 text-white"
+        >
+          <FiUpload /> Select Resume
+        </button>
+      )}
+
+      <ResumesPopup
+        isOpen={showResumesPopup}
+        onClose={() => setShowResumesPopup(false)}
+        onSelectResume={(url) => {
+          setResumeUrl(url);
+          setShowResumesPopup(false);
+        }}
+      />
+    </div>
+  </div>
+
+  <div>
+    <label className="block text-gray-400 mb-2">Job Title</label>
+    <input
+      type="text"
+      value={jobTitle}
+      onChange={(e) => setJobTitle(e.target.value)}
+      placeholder="e.g. Backend Engineer"
+      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-blue-400 focus:outline-none"
+    />
+  </div>
+</div> */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+  <div>
+    <label className="block text-gray-400 mb-2">Resume</label>
+
+    {resumeUrl && resumeTitle ? (
+      <div className="flex items-center justify-between bg-gray-700 border border-gray-600 rounded-lg px-4 py-3">
+        <div className="flex items-center gap-3 overflow-hidden">
+          <div className="bg-blue-600 text-white text-sm px-2 py-1 rounded-md">📄</div>
+          <span className="text-white truncate">{resumeTitle}</span>
+        </div>
+        <button
+          onClick={() => setShowResumesPopup(true)}
+          className="text-blue-400 hover:text-blue-300 underline text-sm"
+        >
+          Change
+        </button>
+      </div>
+    ) : (
+      <button
+        onClick={() => setShowResumesPopup(true)}
+        className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg border border-gray-600 flex items-center gap-2 text-white"
+      >
+        <FiUpload /> Select Resume
+      </button>
+    )}
+
+    <ResumesPopup
+      isOpen={showResumesPopup}
+      onClose={() => setShowResumesPopup(false)}
+      onSelectResume={(url, title) => {
+        setResumeUrl(url);
+        setResumeTitle(title);
+        setShowResumesPopup(false);
+      }}
+    />
+  </div>
+
+  <div>
+    <label className="block text-gray-400 mb-2">Job Title</label>
+    <input
+      type="text"
+      value={jobTitle}
+      onChange={(e) => setJobTitle(e.target.value)}
+      placeholder="e.g. Backend Engineer"
+      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-blue-400 focus:outline-none"
+    />
+  </div>
+</div>
 
             <div className="mb-4">
               <label className="block text-gray-400 mb-2">
@@ -420,7 +536,7 @@ const [result, setResult] = useState<AnalysisResponse | null>(null);
           </div>
 
           {/* Results Section */}
-{result && (
+          {result && (
             <div className="space-y-6">
               {result.plan === "BASIC" ? (
                 <BasicAnalysisView data={result.data as BasicAnalysisData} />

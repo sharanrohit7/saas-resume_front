@@ -10,6 +10,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { auth } from '../lib/firebaseClient';
+import { handleResumeUpload } from '../api/resume';
+import UploadButton from '../components/UploadButton';
 
 export default function Dashboard() {
   const [user, loading] = useAuthState(auth);
@@ -20,7 +22,6 @@ export default function Dashboard() {
   }, [user, loading]);
 
   if (loading) return <LoadingSpinner />;
-
   return (
     <ProtectedRoute>
 
@@ -86,9 +87,11 @@ export default function Dashboard() {
                   ))}
                 </div>
               </div>
-              <button className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-medium transition-colors">
+              {/* <button onClick={handleResumeUpload} className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-medium transition-colors">
                 Upload New Resume
-              </button>
+              </button> */}
+
+              <UploadButton />
             </div>
           </div>
 
