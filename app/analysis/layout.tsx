@@ -1,5 +1,4 @@
 import Sidebar from "../components/Sidebar";
-
 export default function AnalysisLayout({
   children,
 }: {
@@ -14,3 +13,4 @@ export default function AnalysisLayout({
     </div>
   );
 }
+

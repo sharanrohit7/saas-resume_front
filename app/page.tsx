@@ -1,12 +1,9 @@
 "use client";
 
-import Link from "next/link";
+
 import LoginCard from "./components/Login";
 import Footer from "./components/Footer";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "./lib/firebaseClient";
-import { signInUser, User } from "./api/auth,";
-import router from "next/router";
+
 
 export default function Home() {
   const handleScrollToLogin = () => {

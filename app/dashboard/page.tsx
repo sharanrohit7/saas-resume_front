@@ -10,16 +10,17 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { auth } from '../lib/firebaseClient';
-import { handleResumeUpload } from '../api/resume';
 import UploadButton from '../components/UploadButton';
+import LoadingSpinner from '../components/Spinner';
 
 export default function Dashboard() {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) router.push("/"); // Redirect if not logged in
-  }, [user, loading]);
+  if (!loading && !user) router.push("/"); // Redirect if not logged in
+}, [user, loading, router]);
+
 
   if (loading) return <LoadingSpinner />;
   return (
@@ -162,10 +163,3 @@ function StatCard({ title, value, trend, icon, color }: {
   );
 }
 
-function LoadingSpinner() {
-  return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-400"></div>
-    </div>
-  );
-}

@@ -1,5 +1,7 @@
 // import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
+import { ReactNode } from "react";
+import { AuthProvider } from "./context/AuthContext";
 import "./globals.css";
 
 // const geistSans = Geist({
@@ -13,15 +15,24 @@ import "./globals.css";
 // });
 
 
-import { AuthProvider } from './context/AuthContext';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+
+
+
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
 }
+
 

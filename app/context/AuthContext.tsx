@@ -42,7 +42,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, loading, token }}>
-      {children}
+       <html lang="en" suppressHydrationWarning></html>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

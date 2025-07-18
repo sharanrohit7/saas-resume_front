@@ -13,9 +13,17 @@ export const getResumes = async () => {
 
 
 
-export async function handleResumeUpload(): Promise<any | null> {
+type ResumeUploadResult = {
+  success: boolean;
+  message?: string;
+  results: {
+    status: 'saved' | string; // adjust this to match your actual API
+    [key: string]: unknown;
+  }[];
+};
+
+export async function handleResumeUpload(): Promise<ResumeUploadResult | null> {
   return new Promise((resolve, reject) => {
-    // 1. Create input
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/pdf';
@@ -24,18 +32,24 @@ export async function handleResumeUpload(): Promise<any | null> {
     input.onchange = async () => {
       if (!input.files || input.files.length === 0) {
         toast.error('No file selected');
-        return resolve(null); // Do not proceed if nothing selected
+        return resolve(null);
       }
 
       try {
         const formData = new FormData();
-        Array.from(input.files).forEach(file => formData.append('resumes', file));
+        Array.from(input.files).forEach(file =>
+          formData.append('resumes', file)
+        );
 
-        const response = await api.post('/file/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        const response = await api.post<ResumeUploadResult>(
+          '/file/upload',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
 
         const result = response.data;
 
@@ -44,9 +58,8 @@ export async function handleResumeUpload(): Promise<any | null> {
           return resolve(result);
         }
 
-        // Analyze upload results
         const hasParsingFailures = result.results.some(
-          (r: any) => r.status !== 'saved'
+          (r) => r.status !== 'saved'
         );
 
         if (hasParsingFailures) {
@@ -56,17 +69,19 @@ export async function handleResumeUpload(): Promise<any | null> {
         }
 
         return resolve(result);
-      } catch (err: any) {
-        console.error('Upload failed:', err);
+      } catch (err) {
+        const error = err as { response?: { data?: { message?: string } }, message?: string };
+        console.error('Upload failed:', error);
         toast.error(
-          err?.response?.data?.message ||
-            err?.message ||
+          error?.response?.data?.message ||
+            error?.message ||
             'Something went wrong while uploading'
         );
-        reject(err);
+        reject(error);
       }
     };
 
     input.click(); // Trigger file dialog
   });
 }
+
