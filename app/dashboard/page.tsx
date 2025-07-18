@@ -29,7 +29,7 @@ export default function Dashboard() {
     
     <div className="min-h-screen bg-gray-900 text-gray-100">
       {/* Navigation */}
-      <nav className="flex items-center justify-between p-6 border-b border-gray-800">
+      {/* <nav className="flex items-center justify-between p-6 border-b border-gray-800">
         <div className="text-2xl font-bold text-blue-400">JobFit AI</div>
         <div className="flex items-center gap-4">
           <button className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors">
@@ -39,7 +39,7 @@ export default function Dashboard() {
             <span>{user?.displayName || "User"}</span>
           </button>
         </div>
-      </nav>
+      </nav> */}
 
       {/* Main Dashboard */}
       <div className="container mx-auto px-6 py-8">

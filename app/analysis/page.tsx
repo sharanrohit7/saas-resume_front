@@ -231,7 +231,7 @@ export default function ResumeAnalysis() {
 
    
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-2 text-white">Resume Analysis</h1>
+        {/* <h1 className="text-2xl font-bold mb-2 text-white">Resume Analysis</h1> */}
 
         {/* Upgrade Banner (shown for basic plan) */}
         {result?.plan === "BASIC" && (

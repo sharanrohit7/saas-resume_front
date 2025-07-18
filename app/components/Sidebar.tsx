@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiHome, FiFileText, FiBriefcase, FiSend, FiLogOut } from "react-icons/fi";
+import { FiHome, FiFileText, FiBriefcase, FiLogOut, FiStar } from "react-icons/fi";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebaseClient";
@@ -12,18 +12,20 @@ export default function Sidebar() {
   const [user] = useAuthState(auth);
 
   const navItems = [
-    { name: "Dashboard", href: "/dashboard", icon: <FiHome className="w-5 h-5" /> },
+    // { name: "Dashboard", href: "/dashboard", icon: <FiHome className="w-5 h-5" /> },
     { name: "Resume Analysis", href: "/analysis", icon: <FiFileText className="w-5 h-5" /> },
     { name: "My Resumes", href: "/resumes", icon: <FiBriefcase className="w-5 h-5" /> },
-    { name: "Applied Jobs", href: "/dashboard/applications", icon: <FiSend className="w-5 h-5" /> },
+    { name: "Credits", href: "credits", icon: <FiStar className="w-5 h-5" /> },
+    // { name: "Applied Jobs", href: "/dashboard/applications", icon: <FiSend className="w-5 h-5" /> },
   ];
 
   return (
     <aside className="fixed inset-y-0 left-0 w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
       {/* Brand Logo */}
-      <div className="p-6 border-b border-gray-700">
-        <h1 className="text-2xl font-bold text-blue-400">JobFit AI</h1>
-      </div>
+      <div className="h-15 flex items-center px-6 border-b border-gray-700">
+  <h1 className="text-xl font-bold text-blue-400">JobFit AI</h1>
+</div>
+
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto p-4 space-y-1">

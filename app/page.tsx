@@ -1,121 +1,156 @@
 "use client";
 
-
-import LoginCard from "./components/Login";
+import Link from "next/link";
 import Footer from "./components/Footer";
-
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "./lib/firebaseClient";
+import { signInUser, User } from "./api/auth";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Home() {
-  const handleScrollToLogin = () => {
-  const loginSection = document.getElementById('login');
-  if (loginSection) {
-    loginSection.scrollIntoView({ behavior: 'smooth' });
-  }
-};
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+  const handleGoogleLogin = async () => {
+    try {
+      const { user } = await signInWithPopup(auth, provider);
+
+      const signInData: User = {
+        email: user.email || "",
+        firebaseUID: user.uid,
+        photoURL: user.photoURL || "",
+        authProvider: "GOOGLE",
+        country: "IN",
+      };
+
+      await signInUser(signInData);
+      router.push("/analysis"); // After login
+    } catch (error) {
+      console.error("Google Login failed:", error);
+      setError("Login failed. Try again.");
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
-      {/* Navigation */}
-      <nav className="flex items-center justify-between p-6 border-b border-gray-800">
-        <div className="text-2xl font-bold text-blue-400">JobFit AI</div>
+    <div className="min-h-screen bg-gray-950 text-white font-sans">
+      {/* Top Nav */}
+      <nav className="flex items-center justify-between px-8 py-5 bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+        <div className="text-2xl font-bold text-blue-500">JobFit AI</div>
         <button
-          onClick={handleScrollToLogin}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-500 transition-colors"
+          onClick={handleGoogleLogin}
+          className="bg-blue-600 hover:bg-blue-500 px-5 py-2 rounded-lg text-white font-medium transition"
         >
           Get Started
         </button>
       </nav>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-6 py-16 md:flex md:items-center">
-        <div className="md:w-1/2">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            Beat the ATS & Get More Interviews
+      {/* Hero */}
+      <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-20 bg-gradient-to-b from-gray-900 to-gray-950">
+        <div className="md:w-1/2 space-y-6">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+            Unlock More Interviews with <span className="text-blue-500">AI-Powered</span> Resume Analysis
           </h1>
-          <p className="text-xl text-gray-300 mb-8">
-            Upload your resume and job description – our AI analyzes gaps,
-            suggests improvements, and finds matching jobs in seconds.
+          <p className="text-lg text-gray-300">
+            Upload your resume, match it to jobs, and improve it using our smart ATS feedback system.
           </p>
           <div className="flex gap-4">
             <button
-              onClick={handleScrollToLogin}
-              className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-500 transition-colors inline-block"
+              onClick={handleGoogleLogin}
+              className="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-lg text-white text-lg font-medium transition"
             >
-              Sign Up Free
+              Start Free
             </button>
-
-            <button className="border-2 border-gray-700 text-gray-300 px-8 py-4 rounded-lg text-lg hover:border-blue-400 hover:text-white transition-colors">
-              How It Works →
-            </button>
+            <Link
+              href="/pricing"
+              className="px-6 py-3 border border-gray-600 hover:border-blue-400 text-gray-300 rounded-lg text-lg transition"
+            >
+              View Plans
+            </Link>
           </div>
+          {error && <p className="text-red-400 text-sm mt-3">{error}</p>}
         </div>
+
+        {/* Mockup */}
         <div className="md:w-1/2 mt-12 md:mt-0">
-          {/* Dashboard Mockup */}
-          <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
-            <div className="flex items-center justify-between mb-6">
-              <div className="text-lg font-semibold text-white">
-                Resume Score: <span className="text-blue-400">82% Match</span>
-              </div>
+          <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 w-full max-w-md mx-auto shadow-lg">
+            <div className="text-lg font-semibold mb-4 text-white">
+              Resume Score: <span className="text-blue-400">82% Match</span>
             </div>
-            <div className="space-y-4 mb-6">
-              <div className="bg-gray-700 p-4 rounded-lg">
-                <div className="text-sm text-gray-300">
-                  Missing Skills: React, TypeScript
-                </div>
-              </div>
-              <div className="bg-gray-700 p-4 rounded-lg">
-                <div className="font-medium text-white">SDE 2 at Amazon</div>
-                <div className="text-sm text-gray-400">
-                  New York, NY • Full-time
-                </div>
+            <div className="bg-gray-700 p-4 rounded-lg text-sm text-gray-300 mb-2">
+              🔍 Missing Skills: React, TypeScript, AWS
+            </div>
+            <div className="bg-gray-700 p-4 rounded-lg text-white font-medium">
+              📄 Target Role: SDE 2 at Amazon
+              <div className="text-sm text-gray-400 mt-1">
+                New York, NY • Full-time
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="bg-gray-800 py-20">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-white">
-            Why JobFit AI?
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: "🔍",
-                title: "Deep Resume Analysis",
-                desc: "Identifies missing keywords and suggests ATS-friendly rewrites",
-              },
-              {
-                icon: "🎯",
-                title: "Smart Job Matching",
-                desc: "Searches 1000s of listings to find your perfect role",
-              },
-              {
-                icon: "📈",
-                title: "Competitive Edge",
-                desc: "See how you stack against other applicants",
-              },
-            ].map((feature, i) => (
-              <div
-                key={i}
-                className="bg-gray-700 p-8 rounded-xl border border-gray-600 hover:border-blue-400 transition-colors"
-              >
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-4 text-white">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-300">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
+      {/* Feature Breakdown */}
+      <section className="bg-gray-900 py-20 px-6 md:px-16">
+        <h2 className="text-3xl font-bold text-center mb-12">What You Get</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {[
+            {
+              icon: "🧠",
+              title: "Basic Resume Score",
+              desc: "Understand where you stand vs job descriptions.",
+            },
+            {
+              icon: "🚀",
+              title: "Pro Resume Rewrite",
+              desc: "Get AI-powered suggestions to beat ATS filters.",
+            },
+            {
+              icon: "📊",
+              title: "Compare Against Peers",
+              desc: "Benchmark your resume with industry peers.",
+            },
+          ].map((f, i) => (
+            <div
+              key={i}
+              className="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition"
+            >
+              <div className="text-4xl mb-4">{f.icon}</div>
+              <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
+              <p className="text-gray-300">{f.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Login/Signup Section */}
-      <section id="login" className="container mx-auto px-6 py-20 max-w-md">
-        <LoginCard />
+      {/* Coming Soon */}
+      <section className="bg-gradient-to-t from-gray-950 to-gray-900 py-20 px-6 md:px-16">
+        <h2 className="text-3xl font-bold text-center mb-12">Coming Soon 🚧</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {[
+            {
+              icon: "🔍",
+              title: "AI Job Search",
+              desc: "Auto-scan 1000s of jobs and match based on resume + JD fit.",
+            },
+            {
+              icon: "🎤",
+              title: "AI Interview Prep",
+              desc: "Smart Q&A training based on target job role and resume.",
+            },
+          ].map((f, i) => (
+            <div
+              key={i}
+              className="bg-gray-800 p-6 rounded-xl border border-dashed border-gray-700 text-gray-400 hover:text-white hover:border-blue-500 transition"
+            >
+              <div className="text-3xl mb-3">{f.icon}</div>
+              <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
+              <p>{f.desc}</p>
+            </div>
+          ))}
+        </div>
       </section>
+
       <Footer />
     </div>
   );
