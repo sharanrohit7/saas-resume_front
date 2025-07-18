@@ -6,7 +6,7 @@ export const getUserCredits = async (): Promise<{ success: boolean; balance?: { 
     // console.log("Response data from api", response.data);
     
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching credits:", error);
     return { success: false };
   }

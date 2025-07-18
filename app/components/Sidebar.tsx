@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiHome, FiFileText, FiBriefcase, FiLogOut, FiStar } from "react-icons/fi";
+import {  FiFileText, FiBriefcase, FiLogOut, FiStar, FiMessageCircle } from "react-icons/fi";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebaseClient";
@@ -15,8 +15,8 @@ export default function Sidebar() {
     // { name: "Dashboard", href: "/dashboard", icon: <FiHome className="w-5 h-5" /> },
     { name: "Resume Analysis", href: "/analysis", icon: <FiFileText className="w-5 h-5" /> },
     { name: "My Resumes", href: "/resumes", icon: <FiBriefcase className="w-5 h-5" /> },
-    { name: "Credits", href: "credits", icon: <FiStar className="w-5 h-5" /> },
-    // { name: "Applied Jobs", href: "/dashboard/applications", icon: <FiSend className="w-5 h-5" /> },
+    { name: "Credits", href: "/credits", icon: <FiStar className="w-5 h-5" /> },
+    { name: "Interview Questions", href: "/interview-questions", icon: <FiMessageCircle  className="w-5 h-5" /> },
   ];
 
   return (

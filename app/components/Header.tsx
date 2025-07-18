@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { FiBell, FiUser, FiPlusCircle } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { getUserCredits } from '../api/credits';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 let hasFetched = false;
 export default function Header() {
    const pathname = usePathname();
